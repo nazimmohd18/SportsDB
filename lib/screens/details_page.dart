@@ -19,6 +19,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
   final _searchFocusNode = FocusNode();
 
+  dynamic newData;
+
   dynamic jsonData;
   // To collect all the data coming from Sports List Api.
   Future getSportsList() async {
@@ -28,6 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
       jsonData = jsonDecode(response.body);
       print('Data from Sports DB: ' + jsonData.toString());
       print(jsonData["countrys"].length);
+      newData = jsonData;
       return jsonData;
     } else {
       throw Exception("Unable to load data");
@@ -45,6 +48,7 @@ class _DetailsPageState extends State<DetailsPage> {
       data = jsonDecode(response.body);
       print('Data from Search Data: ' + data.toString());
       print(data["countrys"].length);
+      newData = data;
       return data;
     } else {
       throw Exception("Unable to load data");
@@ -156,12 +160,12 @@ class _DetailsPageState extends State<DetailsPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                    image: NetworkImage(jsonData["countrys"]
+                                    image: NetworkImage(newData["countrys"]
                                                 [index]["strBanner"] ==
                                             null
                                         // using static data if the strBanner is null.
                                         ? "https://www.thesportsdb.com/images/media/league/banner/tvuyrw1472151298.jpg"
-                                        : jsonData["countrys"][index]
+                                        : newData["countrys"][index]
                                                 ["strBanner"]
                                             .toString()),
                                     fit: BoxFit.fill,
@@ -175,11 +179,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    jsonData["countrys"][index]["strLeague"] ==
+                                    newData["countrys"][index]["strLeague"] ==
                                             null
                                     // using static data if the strLeague is null.
                                         ? "Soccer"
-                                        : jsonData["countrys"][index]
+                                        : newData["countrys"][index]
                                                 ["strLeague"]
                                             .toString(),
                                     style: TextStyle(
@@ -197,12 +201,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                         width: deviceWidth * .3,
                                         height: deviceWidth * .1,
                                         child: Image.network(
-                                          jsonData["countrys"][index]
+                                          newData["countrys"][index]
                                                       ["strLogo"] ==
                                                   null
                                           // using static data if the strLogo is null.
                                               ? "https://www.thesportsdb.com/images/media/league/logo/wtrpqs1472152759.png"
-                                              : jsonData["countrys"][index]
+                                              : newData["countrys"][index]
                                                       ["strLogo"]
                                                   .toString(),
                                           fit: BoxFit.contain,
@@ -211,8 +215,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ],
                                   ),
                                   Row(
-                                    children: [
-                                      jsonData["countrys"][index]
+                                    children: [newData["countrys"][index]
                                                   ["strFacebook"] ==
                                               null
                                           ? Container()
@@ -225,7 +228,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       SizedBox(
                                         width: deviceWidth * .025,
                                       ),
-                                      jsonData["countrys"][index]
+                                      newData["countrys"][index]
                                                   ["strTwitter"] ==
                                               null
                                           ? Container()
